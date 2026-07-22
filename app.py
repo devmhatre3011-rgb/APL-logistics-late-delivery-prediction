@@ -1,3 +1,4 @@
+import os
 import streamlit as st
 import pandas as pd
 import numpy as np
@@ -5,7 +6,6 @@ import matplotlib.pyplot as plt
 import seaborn as sns
 from sklearn.model_selection import train_test_split
 from sklearn.ensemble import RandomForestClassifier
-from sklearn.linear_model import LogisticRegression
 from sklearn.metrics import roc_auc_score, precision_score, recall_score, f1_score, confusion_matrix
 
 # -----------------------------------------------------------------------------
@@ -18,35 +18,35 @@ st.set_page_config(
     initial_sidebar_state="expanded"
 )
 
-# Clean, professional styling injection
-st.markdown("""
-    <style>
-    .main-title { font-size: 2.2rem; font-weight: bold; color: #0F172A; margin-bottom: 0.2rem; }
-    .subtitle { font-size: 1.1rem; color: #64748B; margin-bottom: 2rem; }
-    .card-box { background-color: #F8FAFC; padding: 1.5rem; border-radius: 8px; border: 1px solid #E2E8F0; text-align: center; }
-    .directive-alert { padding: 1.2rem; border-radius: 6px; font-weight: 500; margin-top: 1rem; }
-    </style>
-""", unsafe_allow_html=True)
-
-st.markdown('<div class="main-title">🚢 APL Logistics Late Delivery Risk Prediction Desk</div>', unsafe_allow_html=True)
-st.markdown('<div class="subtitle">Global Supply Chain Operations Optimization Engine</div>', unsafe_allow_html=True)
+st.title("🚢 APL Logistics Late Delivery Risk Prediction Desk")
+st.caption("Global Supply Chain Operations Optimization Engine")
+st.write("---")
 
 # -----------------------------------------------------------------------------
-# 2. DATA PIPELINE & FEATURE ENGINEERING
+# 2. DATA PIPELINE WITH GOOGLE DRIVE DIRECT LOAD
 # -----------------------------------------------------------------------------
+# ⚠️ REPLACE THIS WITH YOUR ACTUAL GOOGLE DRIVE FILE ID FROM STEP 1
+GOOGLE_DRIVE_FILE_ID = "YOUR_GOOGLE_DRIVE_FILE_ID_HERE" 
+
 @st.cache_data
 def run_data_pipeline():
-    # Load dataset with encoding protection
-    df = pd.read_csv('APL_Logistics.csv', encoding='latin1')
+    file_path = 'APL_Logistics.csv'
+    
+    # If the CSV isn't on the server, download it directly from Google Drive!
+    if not os.path.exists(file_path):
+        drive_url = f'https://drive.google.com/uc?id=https://drive.google.com/file/d/1KoQrXqioQnKdcLbnuOr52EWew-XVw7VB/view?usp=sharing
+        df = pd.read_csv(drive_url, encoding='latin1')
+    else:
+        df = pd.read_csv(file_path, encoding='latin1')
     
     # Preprocessing: Handle missing values safely
     df['Customer Lname'] = df['Customer Lname'].fillna('')
     df['Customer Zipcode'] = df['Customer Zipcode'].fillna(0)
     
-    # 1. Shipping Pressure Index (scheduled days vs quantity)
+    # 1. Shipping Pressure Index
     df['Shipping_Pressure_Index'] = df['Days for shipment (scheduled)'] / (df['Order Item Quantity'] + 0.1)
     
-    # 2. Mode Risk Flags (express vs standard)
+    # 2. Mode Risk Flags
     mode_map = {'Same Day': 0.9, 'First Class': 0.7, 'Second Class': 0.4, 'Standard Class': 0.2}
     df['Mode_Risk_Flag'] = df['Shipping Mode'].map(mode_map).fillna(0.3)
     
@@ -57,10 +57,9 @@ def run_data_pipeline():
 
 try:
     data = run_data_pipeline()
-except FileNotFoundError:
-    st.error("❌ File Mismatch: Make sure 'APL_Logistics.csv' is placed in the 'APL_Logistics_Late_Delivery_Prediction' folder.")
+except Exception as e:
+    st.error(f"❌ Data Load Error: Ensure the Google Drive link is set to 'Anyone with the link can view'. Details: {e}")
     st.stop()
-
 # -----------------------------------------------------------------------------
 # 3. GLOBAL USER CAPABILITIES (SIDEBAR FILTERS)
 # -----------------------------------------------------------------------------
