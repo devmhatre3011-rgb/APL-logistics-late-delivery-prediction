@@ -26,7 +26,7 @@ st.write("---")
 # 2. DATA PIPELINE WITH GOOGLE DRIVE DIRECT LOAD
 # -----------------------------------------------------------------------------
 # ⚠️ REPLACE THIS WITH YOUR ACTUAL GOOGLE DRIVE FILE ID FROM STEP 1
-GOOGLE_DRIVE_FILE_ID = https://drive.google.com/file/d/1KoQrXqioQnKdcLbnuOr52EWew-XVw7VB/view?usp=sharing 
+GOOGLE_DRIVE_FILE_ID = "1KoQrXqioQnKdcLbnuOr52EWew-XVw7VB"
 
 @st.cache_data
 def run_data_pipeline():
