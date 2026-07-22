@@ -7,6 +7,8 @@ import seaborn as sns
 from sklearn.model_selection import train_test_split
 from sklearn.ensemble import RandomForestClassifier
 from sklearn.metrics import roc_auc_score, precision_score, recall_score, f1_score, confusion_matrix
+# Add LogisticRegression to your linear_model imports:
+from sklearn.linear_model import LogisticRegression
 
 # -----------------------------------------------------------------------------
 # 1. PAGE LAYOUT & APP CONFIGURATION
