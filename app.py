@@ -26,7 +26,7 @@ st.write("---")
 # 2. DATA PIPELINE WITH GOOGLE DRIVE DIRECT LOAD
 # -----------------------------------------------------------------------------
 # ⚠️ REPLACE THIS WITH YOUR ACTUAL GOOGLE DRIVE FILE ID FROM STEP 1
-GOOGLE_DRIVE_FILE_ID = https://drive.google.com/file/d/1KoQrXqioQnKdcLbnuOr52EWew-XVw7VB/view?usp=sharing
+GOOGLE_DRIVE_FILE_ID = https://drive.google.com/file/d/1KoQrXqioQnKdcLbnuOr52EWew-XVw7VB/view?usp=sharing 
 
 @st.cache_data
 def run_data_pipeline():
@@ -34,7 +34,7 @@ def run_data_pipeline():
     
     # If the CSV isn't on the server, download it directly from Google Drive!
     if not os.path.exists(file_path):
-        drive_url = 'https://drive.google.com/uc?id=https://drive.google.com/file/d/1KoQrXqioQnKdcLbnuOr52EWew-XVw7VB/view?usp=sharing
+        drive_url = f'https://drive.google.com/uc?id=https://drive.google.com/file/d/1KoQrXqioQnKdcLbnuOr52EWew-XVw7VB/view?usp=sharing'
         df = pd.read_csv(drive_url, encoding='latin1')
     else:
         df = pd.read_csv(file_path, encoding='latin1')
