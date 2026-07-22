@@ -34,7 +34,7 @@ def run_data_pipeline():
     
     # If the CSV isn't on the server, download it directly from Google Drive!
     if not os.path.exists(file_path):
-       drive_url = 'https://drive.google.com/uc?id=1KoQrXqioQnKdcLbnuOr52EWew-XVw7VB&export=download'
+        drive_url = 'https://drive.google.com/uc?id=1KoQrXqioQnKdcLbnuOr52EWew-XVw7VB&export=download'
         df = pd.read_csv(drive_url, encoding='latin1')
     else:
         df = pd.read_csv(file_path, encoding='latin1')
